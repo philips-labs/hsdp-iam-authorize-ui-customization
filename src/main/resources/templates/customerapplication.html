@@ -1,0 +1,84 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous">
+    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous">
+    </script>   
+    <script src="qrcode.min.js">
+    </script>
+    <style>
+        .loader {
+            border: 4px solid #f3f3f3;
+            /* Light grey */
+            border-top: 4px solid #3498db;
+            /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <script th:inline="javascript">
+    /*<![CDATA[*/
+    var url = [[${am_url}]];
+    var scriptTagForLibrary = document.createElement('script');
+    scriptTagForLibrary.setAttribute("type", "text/javascript");
+    scriptTagForLibrary.setAttribute('src', url+'/resources/iam_authorization-1.0.0.js');
+    scriptTagForLibrary.setAttribute('async',false);
+    scriptTagForLibrary.onload = function(){
+    	var scriptTagForRendering = document.createElement('script');
+        scriptTagForRendering.setAttribute("type", "text/javascript");
+        scriptTagForRendering.setAttribute('src', 'iam-renderui.js');
+        scriptTagForRendering.setAttribute('async',false);        
+        document.head.appendChild(scriptTagForRendering); 
+    };
+    document.head.appendChild(scriptTagForLibrary);
+	/*]]>*/
+	</script>
+    <title>Customer App</title>
+</head>
+<body>
+    <main role="main" class="container text-center">
+        <div class="row" style="height:100px;"></div>
+        <div class="row">
+        	<input type="hidden" id="amUrl" th:attr="value=${am_url}"/>    	
+            <div class="collapse text-center" id="login" style="margin:0 auto; width:30%;">
+                <img class="mb-4" style="max-width:160px; min-width:100px; width: 24vw; max-height: 160px; min-height: 100px; border:0;" src="http://images.philips.com/is/image/PhilipsConsumer/janrain_logo-AAA-en_US-001?wid=160&amp;hei=160&amp;$pnglarge$" alt="Philips">
+                <div id="showLogin"></div>
+            </div>
+            <div class="collapse text-center" id="qr" style="margin:0 auto; width:30%;">
+                <img class="mb-4" style="max-width:160px; min-width:100px; width: 24vw; max-height: 160px; min-height: 100px; border:0;" src="http://images.philips.com/is/image/PhilipsConsumer/janrain_logo-AAA-en_US-001?wid=160&amp;hei=160&amp;$pnglarge$" alt="Philips">
+                <center>
+                    <div id="qrCode"></div>
+                </center>
+                <div id="loginUsingCode"></div>
+            </div>
+            <div class="collapse text-center" id="consent" style="margin:0 auto; width:30%;">
+                <img class="mb-4" style="max-width:160px; min-width:100px; width: 24vw; max-height: 160px; min-height: 100px; border:0;" src="http://images.philips.com/is/image/PhilipsConsumer/janrain_logo-AAA-en_US-001?wid=160&amp;hei=160&amp;$pnglarge$" alt="Philips">                
+                <div id="showConsent"></div>        
+            </div>
+            <div class="collapse text-center" id="errorpage" style="margin:0 auto; width:30%;">
+                <img class="mb-4" style="max-width:160px; min-width:100px; width: 24vw; max-height: 160px; min-height: 100px; border:0;" src="http://images.philips.com/is/image/PhilipsConsumer/janrain_logo-AAA-en_US-001?wid=160&amp;hei=160&amp;$pnglarge$" alt="Philips">
+                <div id="showError"></div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
