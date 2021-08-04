@@ -16,11 +16,11 @@ public class AuthAuthzController {
   /**
    * This endpoint fetches the Access-Management HOST URL from deployment environment and invokes the view.
    */
-  @GetMapping("/customerapplication")
-  public String loginForm(Model model) {
-    
+  @GetMapping ("/customerapplication")
+  public String customLoginV2 (Model model) {
+
     String amUrl = System.getenv ("AM_HOST");
-    model.addAttribute("am_url", amUrl);
+    model.addAttribute ("am_url", amUrl);
     return "customerapplication";
   }
   
@@ -28,14 +28,6 @@ public class AuthAuthzController {
   public String homeView(Model model) {
     
     return "home";
-  }
-
-  @GetMapping ("/customerapplicationv2")
-  public String customLoginV2 (Model model) {
-
-    String amUrl = System.getenv ("AM_HOST");
-    model.addAttribute ("am_url", amUrl);
-    return "customerapplicationv2";
   }
 
 }

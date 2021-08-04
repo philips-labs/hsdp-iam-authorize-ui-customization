@@ -10,7 +10,7 @@ Clients can also develop custom application and call the JS library to implement
 
 Steps to deploy
 ---------------
-1. Create an OAuth2.0 Client with IAM and provide the ID in `client_id` attribute of src/main/resources/static/iam-renderui-2.0.0.js.
-2. `REDIRECT_URI` of the OAuth2.0 Client created should also be mentioned in src/main/resources/static/iam-renderui-2.0.0.js.
+1. Create an OAuth2.0 Client with IAM and provide the ID in `client_id` attribute of src/main/resources/static/iam-renderui.js.
+2. `REDIRECT_URI` of the OAuth2.0 Client created should also be mentioned in src/main/resources/static/iam-renderui.js.
 3. Set `AM_HOST` variable pointing to IAM Authorize deployment url while deploying the application.
-4. Launch the application using {{ applicationURL }}/customerapplicationv2.
+4. Launch the application using {{ applicationURL }}/customerapplication.

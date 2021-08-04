@@ -40,14 +40,20 @@
     var url = [[${am_url}]];
     var scriptTagForLibrary = document.createElement('script');
     scriptTagForLibrary.setAttribute("type", "text/javascript");
-    scriptTagForLibrary.setAttribute('src', url+'/resources/iam_authorization-1.0.0.js');
+    scriptTagForLibrary.setAttribute('src', url+'/resources/iam_authorization-2.0.0.js');
     scriptTagForLibrary.setAttribute('async',false);
     scriptTagForLibrary.onload = function(){
     	var scriptTagForRendering = document.createElement('script');
-        scriptTagForRendering.setAttribute("type", "text/javascript");
-        scriptTagForRendering.setAttribute('src', 'iam-renderui.js');
-        scriptTagForRendering.setAttribute('async',false);        
-        document.head.appendChild(scriptTagForRendering); 
+      scriptTagForRendering.setAttribute("type", "text/javascript");
+      scriptTagForRendering.setAttribute('src', 'iam-renderui.js');
+      scriptTagForRendering.setAttribute('async',false);        
+      document.head.appendChild(scriptTagForRendering);
+      
+      var scriptTagForTrustDevice = document.createElement('script');
+      scriptTagForTrustDevice.setAttribute("type", "text/javascript");
+      scriptTagForTrustDevice.setAttribute('src', 'deviceinfo.min.js');
+      scriptTagForTrustDevice.setAttribute('async',false);        
+      document.head.appendChild(scriptTagForTrustDevice);
     };
     document.head.appendChild(scriptTagForLibrary);
 	/*]]>*/

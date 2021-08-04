@@ -66,6 +66,9 @@ function showAuthnViewBasedOnHint() {
             $("#consent").collapse("hide");
             $("#errorpage").collapse("hide");
             break;
+        case "COLLECT_DEVICE_INFO":
+        	collectDeviceInfo();
+            break;
         case "SHOW_DEVICE_REGISTRATION":
             $("#qrCode").html("");
             pageContent = '<form onsubmit="return false;"><center><div><h4 class="title"></h4></div></center><center><div class="wrapper text-center"><div class="btn-group"><button class="btn btn-primary btn-block animated fadeIn" onclick="registerDevice();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Register device</button></div></div></center></form>'
@@ -88,7 +91,7 @@ function showAuthnViewBasedOnHint() {
         case "SHOW_OTP":
             $("#qrCode").html("");
             $("#loginUsingCode").html('');
-            pageContent = '<form onsubmit="return false;"><div class="form-group"><input class="form-control" name="One Time Password" id="otp" ,="" placeholder="One Time Password" type="text"></div><center><div><h4 class="title"></h4></div></center><center><div class="wrapper text-center"><div class="btn-group"><button class="btn btn-primary" onclick="verifyOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Submit</button></div></div></center></form>'
+            pageContent = '<form onsubmit="return false;"><div class="form-group"><input class="form-control" name="One Time Password" id="otp" ,="" placeholder="One Time Password" type="text"></div><center><div><h4 class="title"></h4></div></center><div><input type="checkbox" id="trustDevice">Trust this device</div><center><div class="wrapper text-center"><div class="btn-group"><button class="btn btn-primary" onclick="verifyOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Submit</button></div></div></center></form>'
             $("#qrCode").html(pageContent);
             $("#qr").collapse("show");
             $("#login").collapse("hide");
@@ -99,9 +102,9 @@ function showAuthnViewBasedOnHint() {
             $("#qrCode").html("");
             $("#loginUsingCode").html('');
 			if(INVALID_OTP === "invalid_otp"){
-				pageContent = '<center><p><font color="red">Please enter valid OTP.</font></p><center><form onsubmit="return false;"><div class="form-group"><input class="form-control" name="One Time Password" id="otp" ,="" placeholder="One Time Password" type="text"></div><center><div><h4 class="title"></h4></div></center><center><div class="wrapper text-center"><div class="btn-group"><button class="btn btn-primary" onclick="verifyServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Submit</button></div><div class="btn-group"><button class="btn btn-primary" onclick="getServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Resend OTP</button></div></div></center></form>'
+				pageContent = '<center><p><font color="red">Please enter valid OTP.</font></p><center><form onsubmit="return false;"><div class="form-group"><input class="form-control" name="One Time Password" id="otp" ,="" placeholder="One Time Password" type="text"></div><center><div><h4 class="title"></h4></div></center><div><input type="checkbox" id="trustDevice">Trust this device</div><center><div class="wrapper text-center"><div class="btn-group"><button class="btn btn-primary" onclick="verifyServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Submit</button></div><div class="btn-group"><button class="btn btn-primary" onclick="getServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Resend OTP</button></div></div></center></form>'
 			} else {
-				pageContent = '<form onsubmit="return false;"><div class="form-group"><input class="form-control" name="One Time Password" id="otp" ,="" placeholder="One Time Password" type="text"></div><center><div><h4 class="title"></h4></div></center><center><div class="wrapper text-center"><div class="btn-group"><button class="btn btn-primary" onclick="verifyServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Submit</button></div><div class="btn-group"><button class="btn btn-primary" onclick="getServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Resend OTP</button></div></div></center></form>'
+				pageContent = '<form onsubmit="return false;"><div class="form-group"><input class="form-control" name="One Time Password" id="otp" ,="" placeholder="One Time Password" type="text"></div><center><div><h4 class="title"></h4></div></center><div><input type="checkbox" id="trustDevice">Trust this device</div><center><div class="wrapper text-center"><div class="btn-group"><button class="btn btn-primary" onclick="verifyServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Submit</button></div><div class="btn-group"><button class="btn btn-primary" onclick="getServerOTP();" style="background-color:#163670; border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;">Resend OTP</button></div></div></center></form>'
 			}
             $("#qrCode").html(pageContent);
             $("#qr").collapse("show");
@@ -117,12 +120,12 @@ function showAuthnViewBasedOnHint() {
                 pageContent = "<center><div><h4>Login/password/OTP is invalid. Refresh the page to retry.</h4></div></center>";
             }else if (ERROR_CODE === "invalid_request"){
                 pageContent = "<center><div><h4>Missing or invalid parameters. Refresh the page to re-login.</h4></div></center>";
-            }else if(ERROR_CODE === "internal error") {
+            }else if(ERROR_CODE === "internal error"){
                 if(ERROR_DESCRIPTION != "internal server error") {
-                pageContent = "<center><div><h4>"+ERROR_DESCRIPTION+"</h4></div></center>";
-                } else {
-                pageContent = "<center><div><h4>Something went wrong at server side. Refresh the page to retry.</h4></div></center>";
-                }
+                    pageContent = "<center><div><h4>"+ERROR_DESCRIPTION+"</h4></div></center>";
+                    } else {
+                    pageContent = "<center><div><h4>Something went wrong at server side. Refresh the page to retry.</h4></div></center>";
+                    }
             }else{
                 pageContent = "<center><div><h4>Login failed. Refresh the page to retry.</h4></div></center>";
             }
@@ -228,11 +231,17 @@ function verifyQRSharedSecret(){
  * verifyOTP : on clicking 'Submit OTP' button, this method invokes the API to validate the OTP and login
  */
 function verifyOTP() {
+	 
     var authnData = {
         "authId": AUTH_ID,
         "otp": document.getElementById('otp').value,
-        "hint": "VALIDATE_OTP" //dont change this value.
+        "hint": "VALIDATE_OTP", //dont change this value.
+        "trustDevice": "0"
     };
+    var trustDeviceCheckbox = document.getElementById("trustDevice");
+	 if (trustDeviceCheckbox.checked === true) {
+		 authnData.trustDevice = "1";
+	 }
     authenticate(authnData);
 }
 
@@ -243,8 +252,13 @@ function verifyServerOTP() {
     var authnData = {
         "authId": AUTH_ID,
         "otp": document.getElementById('otp').value,
-        "hint": "VALIDATE_SERVER_OTP" //dont change this value.
+        "hint": "VALIDATE_SERVER_OTP", //dont change this value.
+        "trustDevice": "0"
     };
+    var trustDeviceCheckbox = document.getElementById("trustDevice");
+	 if (trustDeviceCheckbox.checked === true) {
+		 authnData.trustDevice = "1";
+	 }
     authenticate(authnData);
 }
 
@@ -381,5 +395,82 @@ function denyConsent(){
 function generateAuthorizeHTMLBasedOnData(){
     var pageContent = '<div class="container font-color-white"><div class="page-header wordwrap"><h1 class="text-center">'+authzData.displayName+'</h1></div><div><p>This application is requesting the following private information:</p><p>You are signed in as: <span class="text-primary save-consent font-color">'+authzData.userName+'</span></p><input type="hidden" id="csrf" name="csrf" aria-hidden="true" value="'+authzData.csrf+'"><input type="checkbox" id="saveConsent" />Save Consent&emsp;<input type="button" class="btn btn-primary animated fadeIn" style="border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;" id="allow" value="Allow" onClick="allowConsent()"/>   <input type="button" class="btn btn-primary animated fadeIn" style="border: 2px solid white; border-radius:6px; margin-right:10px; margin-bottom:15px;" id="deny" value="Deny" onClick="denyConsent()"/></div></div>';
     return pageContent;
+}
 
+function getDeviceInfo() {
+	
+	var devicePrint = {};
+	devicePrint.screen = collectScreenInfo();
+	devicePrint.timezone = collectTimezoneInfo();
+	devicePrint.plugins = collectBrowserPluginsInfo();
+	devicePrint.fonts = collectBrowserFontsInfo();
+	devicePrint.hsdpDeviceID = collectHsdpInfo();
+	if (navigator.userAgent) {
+		devicePrint.userAgent = navigator.userAgent;
+	}
+	if (navigator.appName) {
+		devicePrint.appName = navigator.appName;
+	}
+	if (navigator.appCodeName) {
+		devicePrint.appCodeName = navigator.appCodeName;
+	}
+	if (navigator.appVersion) {
+		devicePrint.appVersion = navigator.appVersion;
+	}
+	if (navigator.appMinorVersion) {
+		devicePrint.appMinorVersion = navigator.appMinorVersion;
+	}
+	if (navigator.buildID) {
+		devicePrint.buildID = navigator.buildID;
+	}
+	if (navigator.platform) {
+		devicePrint.platform = navigator.platform;
+	}
+	if (navigator.cpuClass) {
+		devicePrint.cpuClass = navigator.cpuClass;
+	}
+	if (navigator.oscpu) {
+		devicePrint.oscpu = navigator.oscpu;
+	}
+	if (navigator.product) {
+		devicePrint.product = navigator.product;
+	}
+	if (navigator.productSub) {
+		devicePrint.productSub = navigator.productSub;
+	}
+	if (navigator.vendor) {
+		devicePrint.vendor = navigator.vendor;
+	}
+	if (navigator.vendorSub) {
+		devicePrint.vendorSub = navigator.vendorSub;
+	}
+	if (navigator.language) {
+		devicePrint.language = navigator.language;
+	}
+	if (navigator.userLanguage) {
+		devicePrint.userLanguage = navigator.userLanguage;
+	}
+	if (navigator.browserLanguage) {
+		devicePrint.browserLanguage = navigator.browserLanguage;
+	}
+	if (navigator.systemLanguage) {
+		devicePrint.systemLanguage = navigator.systemLanguage;
+	}
+	return devicePrint;
+}
+/**
+ * collectDeviceInfo - collects the device details, this method invokes the API
+ * to match device
+ * 
+ * @returns
+ */
+function collectDeviceInfo() {
+	var deviceDetails = getDeviceInfo();
+    var authnData = {
+        "authId": AUTH_ID,
+        "deviceDetails": deviceDetails,
+        "hint": "MATCH_DEVICE_INFO" //dont change this value.
+    };
+	console.log("Collecting device information : "+authnData)
+    authenticate(authnData);
 }
